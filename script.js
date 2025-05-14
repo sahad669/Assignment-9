@@ -10,6 +10,9 @@ const getMovies = async (q) => {
     try {
         let response = await fetch(`https://www.omdbapi.com/?apikey=${apikey}&t=${q}`)
         let data = await response.json()
+
+        removeCard()
+
         if (data.Response === "False") {
             showCardDisplay()
             return
@@ -20,41 +23,30 @@ const getMovies = async (q) => {
     }
 }
 
+
+
 movieBtn.addEventListener('click', () => {
+
+  let movieName = movieInp.value.trim()
     gallery.innerHTML = ""
+
+    removeCard()
    
-    if (!query) {
+    if (!movieName) {
         return alert("enter Movie Name")
     }
-    getMovies(query)
+    getMovies(movieName)
     movieInp.value = ""
 })
 
 movieInp.addEventListener('input', () => {
-    query = movieInp.value.trim()
+    query = movieInp.value
 })
 
 
-function showCardDisplay() {
-    alertDiv.innerHTML = `
-        <div class="d-flex justify-content-center  m-5">
-  <div class="card w-25 mb-3" id="myCard">
-    <div class="card-body text-center">
-      <h5 class="card-title">Movie Not Found!</h5>
-      <a href="#" class="btn btn-primary errorbtn" onclick="removeCard()">Back to main page </a>
-    </div>
-  </div>
-</div>`
-}
-
-function removeCard() {
-    let card = document.getElementById("myCard");
-    if (card)
-        card.remove();
-
-}
 
 function displayMovies(data) {
+  removeCard()
   alertDiv.innerHTML = ""
     gallery.innerHTML = `
     <div class="container">
@@ -78,6 +70,24 @@ function displayMovies(data) {
   </div>
 </div>`;
   
+
+}
+function showCardDisplay() {
+    alertDiv.innerHTML = `
+        <div class="d-flex justify-content-center  m-5">
+  <div class="card w-25 mb-3" id="myCard">
+    <div class="card-body text-center">
+      <h5 class="card-title">Movie Not Found!</h5>
+      <a href="#" class="btn btn-primary errorbtn" onclick="removeCard()">Back to main page </a>
+    </div>
+  </div>
+</div>`
+}
+
+function removeCard() {
+    let card = document.getElementById("myCard");
+    if (card)
+        card.remove();
 
 }
 
